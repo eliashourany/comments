@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "content": "This is an awesome idea for an app!",
+    "user": {
+      "username": "amyrobson",
+      "avatar": "https://api.adorable.io/avatars/40/amyrobson.png",
+      "isOnline": true
+    },
+    "score": 10,
+    "createdAt": "2024-03-22T16:33:00Z",
+    "replies": [
+      {
+        "id": 2,
+        "content": "I completely agree!",
+        "user": {
+          "username": "maxblagun",
+          "avatar": "https://api.adorable.io/avatars/40/maxblagun.png",
+          "isOnline": false
+        },
+        "score": 5,
+        "createdAt": "2024-03-22T17:45:00Z",
+        "replies": []
+      }
+    ]
+  }
+]
