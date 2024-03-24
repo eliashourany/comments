@@ -7,21 +7,31 @@ export default defineComponent({
   name: "CommentsView",
   components: { CommentList, CommentForm },
   computed: {
-    ...mapState(["comments", "loading", "error"]),
+    ...mapState(["comments", "loading", "error", "user"]),
   },
   methods: {
     ...mapMutations(["addComment"]),
-    ...mapActions(["fetchComments"]),
+    ...mapActions(["fetchData"]),
   },
   mounted() {
-    this.fetchComments();
+    this.fetchData();
   },
 });
 </script>
 
 <template>
-  <comment-list :comments="comments"></comment-list>
-  <comment-form></comment-form>
+  <div class="container">
+    <comment-list :comments="comments" :username="user.username"></comment-list>
+    <comment-form></comment-form>
+  </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.container {
+  margin: 50px auto;
+  padding: 0 30px;
+  max-width: 768px;
+  display: flex;
+  flex-direction: column;
+}
+</style>

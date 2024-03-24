@@ -14,8 +14,10 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "jest"
+      "jest",
+      "@types/luxon"
     ],
+    "typeRoots": ["./node_modules/@types"],
     "paths": {
       "@/*": [
         "src/*"
