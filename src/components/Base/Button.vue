@@ -26,11 +26,18 @@ export default defineComponent({
       default: "",
     },
   },
+  emits: ["onClick"],
+  methods: {
+    onClick(event: MouseEvent) {
+      this.$emit("onClick", event);
+    },
+  },
 });
 </script>
 
 <template>
   <button
+    @click="onClick"
     :class="[
       'button',
       `button--${theme}`,
