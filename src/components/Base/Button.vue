@@ -37,7 +37,7 @@ export default defineComponent({
 
 <template>
   <button
-    @click="onClick"
+    @click.stop="onClick"
     :class="[
       'button',
       `button--${theme}`,
@@ -48,7 +48,6 @@ export default defineComponent({
     role="button"
     :aria-disabled="disabled"
   >
-    <span class="button__ripple"></span>
     <slot></slot>
   </button>
 </template>
@@ -60,9 +59,9 @@ export default defineComponent({
   padding: 9px 14px;
   font: inherit;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -92,6 +91,10 @@ export default defineComponent({
     background-color: #7f56d9;
   }
 
+  &--primary:not(&--outlined):hover {
+    background-color: lighten(#7f56d9, 10%);
+  }
+
   &--primary#{&}--outlined {
     color: #6941c6;
   }
@@ -100,11 +103,12 @@ export default defineComponent({
     background-color: #b42318;
   }
 
-  &--secondary#{&}--outlined {
-    color: #b42318;
+  &--secondary:not(&--outlined):hover {
+    background-color: lighten(#b42318, 30%);
   }
 
-  &__ripple {
+  &--secondary#{&}--outlined {
+    color: #b42318;
   }
 }
 </style>

@@ -16,7 +16,7 @@ export default defineComponent({
   name: "CommentItem",
   computed: {
     indentation(): string {
-      return this.level * 60 + "px";
+      return this.level * (this.shouldCollapse ? 30 : 60) + "px";
     },
     numberOfRepliesText(): string {
       const totalReplies = countReplies(this.comment);
@@ -26,6 +26,9 @@ export default defineComponent({
       } else {
         return `+${totalReplies} Repl${totalReplies === 1 ? "y" : "ies"}`;
       }
+    },
+    shouldCollapse(): boolean {
+      return this.windowWidth <= 700;
     },
   },
   components: { Badge, Container, Vote, Button, Avatar },
@@ -45,9 +48,17 @@ export default defineComponent({
       this.collapsed = collapsed;
       this.$emit("onCollapse", collapsed);
     },
-    onDelete(event: MouseEvent) {
-      event.stopPropagation();
+    onDelete() {
       this.$emit("onDelete", this.comment.id);
+    },
+    onEdit() {
+      this.$emit("onEdit", this.comment);
+    },
+    onReply() {
+      this.$emit("onReply", this.comment);
+    },
+    setWindowWidth() {
+      this.windowWidth = window.innerWidth;
     },
   },
   emits: [
@@ -64,7 +75,11 @@ export default defineComponent({
       editIcon: EditIcon,
       trashIcon: TrashIcon,
       collapsed: false,
+      windowWidth: window.innerWidth,
     };
+  },
+  created() {
+    window.addEventListener("resize", this.setWindowWidth);
   },
 });
 </script>
@@ -73,13 +88,18 @@ export default defineComponent({
   <Container
     collapsable
     @onCollapse="onCollapse"
-    :classes="{ container: 'comment', content: 'comment__content' }"
+    :classes="{
+      container: 'comment',
+      content: 'comment__content',
+      header: 'comment__header',
+    }"
   >
     <template #header>
       <Avatar
         :username="comment.user.username"
         :is-online="comment.user.isOnline"
         :image-url="comment.user.avatar"
+        className="comment__avatar"
       />
       <transition name="badge">
         <Badge v-show="collapsed" theme="success">{{
@@ -95,11 +115,11 @@ export default defineComponent({
           <Button outlined theme="secondary" @onClick="onDelete">
             <img :src="trashIcon" class="comment__icon" /> Delete
           </Button>
-          <Button outlined>
+          <Button outlined @onClick="onEdit">
             <img :src="editIcon" class="comment__icon" /> Edit
           </Button>
         </template>
-        <Button v-else outlined
+        <Button @onClick="onReply" v-else outlined
           ><img :src="backIcon" class="comment__icon" /> Reply</Button
         >
       </div>
@@ -111,6 +131,7 @@ export default defineComponent({
         :upvoting="upvoting"
         :downvoting="downvoting"
         :score="comment.score"
+        :horizontal="shouldCollapse"
       ></Vote>
       {{ comment.content }}
     </template>
@@ -121,10 +142,27 @@ export default defineComponent({
 .comment {
   margin-left: v-bind(indentation);
 
+  &__header {
+    align-items: center;
+    gap: 16px;
+    align-items: center;
+    @media (max-width: 700px) {
+      flex-wrap: wrap;
+      gap: 8px;
+      row-gap: 0;
+    }
+  }
+  @media (max-width: 700px) {
+    &__avatar {
+      flex-basis: 100%;
+    }
+  }
+
   &__date {
     color: #667085;
-    font-size: 16px;
+    font-size: 1rem;
     margin: 0;
+    flex-shrink: 0;
   }
 
   &__actions {
@@ -140,36 +178,51 @@ export default defineComponent({
 
   &__content {
     color: #667085;
-    font-size: 14px;
+    font-size: 0.9rem;
     line-height: 20px;
     display: flex;
     gap: 15px;
+
+    @media (max-width: 700px) {
+      flex-direction: column-reverse;
+      align-items: start;
+    }
+  }
+
+  &__header,
+  &__content {
+    @media (max-width: 700px) {
+      padding: 10px !important;
+    }
   }
 }
 
-.badge-enter-from {
-  opacity: 0;
-  max-width: 0;
-}
+@media (min-width: 700px) {
+  .badge-enter-from {
+    opacity: 0;
+    max-width: 0;
+  }
 
-.badge-enter-to {
-  max-width: 100%;
-}
-.badge-enter-active,
-.badge-leave-active {
-  transition: all 0.4s ease;
-}
+  .badge-enter-to {
+    max-width: 600px;
+  }
+  .badge-enter-active,
+  .badge-leave-active {
+    transition: all 0.4s ease;
+  }
 
-.badge-leave-from {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
+  .badge-leave-from {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: 600px;
+  }
 
-.badge-leave-to {
-  opacity: 0;
-  max-width: 0;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  margin-right: -16px;
+  .badge-leave-to {
+    opacity: 0;
+    max-width: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-right: -16px;
+  }
 }
 </style>

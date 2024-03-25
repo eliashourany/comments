@@ -3,6 +3,7 @@ import { defineComponent } from "vue";
 import { mapActions, mapMutations, mapState } from "vuex";
 import CommentList from "@/components/CommentList.vue";
 import CommentForm from "@/components/CommentForm.vue";
+import { Mode } from "@/types";
 export default defineComponent({
   name: "CommentsView",
   components: { CommentList, CommentForm },
@@ -18,7 +19,13 @@ export default defineComponent({
   },
   methods: {
     ...mapMutations(["addComment"]),
-    ...mapActions(["fetchData", "deleteComment", "vote"]),
+    ...mapActions(["fetchData", "deleteComment", "vote", "setModeAndComment"]),
+    onEdit(comment: Comment) {
+      this.setModeAndComment({ mode: Mode.Edit, comment });
+    },
+    onReply(comment: Comment) {
+      this.setModeAndComment({ mode: Mode.Reply, comment });
+    },
   },
   mounted() {
     this.fetchData();
@@ -27,7 +34,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="container">
+  <div class="page">
     <comment-list
       @onDelete="deleteComment"
       :comments="comments"
@@ -36,18 +43,18 @@ export default defineComponent({
       @onDownvote="(commentId) => vote({ commentId, isUpvote: false })"
       :upvotes="upvotes"
       :downvotes="downvotes"
+      @onEdit="onEdit"
+      @onReply="onReply"
     ></comment-list>
-    <comment-form></comment-form>
+    <comment-form :user="user"></comment-form>
   </div>
 </template>
 
 <style scoped lang="scss">
-.container {
+.page {
   margin: 50px auto;
   padding: 0 30px;
   max-width: 768px;
-  display: flex;
-  flex-direction: column;
   padding-bottom: 200px;
 }
 </style>

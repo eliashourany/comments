@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import UserIcon from "@/assets/icons/user.svg";
+
 export default defineComponent({
   name: "Avatar",
   data() {
@@ -21,12 +22,18 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    className: {
+      type: String,
+      default: "",
+    },
+    handle: String,
+    title: String,
   },
 });
 </script>
 
 <template>
-  <div class="container">
+  <div :class="['container', className]">
     <figure class="avatar" :aria-labelledby="username">
       <img
         v-if="imageUrl"
@@ -41,6 +48,9 @@ export default defineComponent({
     </figure>
     <figcaption :id="username" class="caption">
       {{ username }}
+      <span class="caption__subtitle">{{ handle }}</span>
+      <br />
+      <span class="caption__subtitle">{{ title }}</span>
     </figcaption>
   </div>
 </template>
@@ -48,7 +58,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .container {
   display: inline-flex;
-  gap: 15px;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -56,8 +66,8 @@ export default defineComponent({
   position: relative;
   color: #344054;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
   margin: 0;
 
   &__image {
@@ -65,22 +75,23 @@ export default defineComponent({
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+    background-color: lightgray;
   }
 
   &__status {
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 10px;
-    height: 10px;
+    width: 0.6rem;
+    height: 0.6rem;
     background-color: #4caf50; /* Online status color */
     border-radius: 50%;
   }
 
   &__default {
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -90,6 +101,10 @@ export default defineComponent({
 
 .caption {
   font-weight: 500;
-  font-size: 16px;
+  font-size: 1rem;
+
+  &__subtitle {
+    color: #667085;
+  }
 }
 </style>

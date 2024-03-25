@@ -1,4 +1,4 @@
-import { Comment } from "@/types";
+import { Comment, User } from "@/types";
 
 export function countReplies(comment: Comment) {
   let totalReplies = comment.replies ? comment.replies.length : 0;
@@ -61,4 +61,15 @@ export function updateCommentById(
   }
 
   return false;
+}
+
+export function generateComment(content: string, user: User) {
+  return {
+    id: new Date().valueOf(),
+    content: content,
+    user,
+    score: 0,
+    createdAt: new Date().toISOString(),
+    replies: [],
+  };
 }

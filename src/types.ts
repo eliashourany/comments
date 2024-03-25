@@ -2,6 +2,8 @@ interface User {
   username: string;
   avatar: string;
   isOnline: boolean;
+  title: string;
+  handle: string;
 }
 
 interface Comment {
@@ -13,4 +15,10 @@ interface Comment {
   replies: Comment[];
 }
 
-export { Comment, User };
+enum Mode {
+  Edit,
+  Reply,
+  New,
+}
+
+export { Comment, User, Mode };

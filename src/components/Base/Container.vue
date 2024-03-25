@@ -84,8 +84,6 @@ export default defineComponent({
   &__header {
     border-bottom: 1px solid #eaecf0;
     display: flex;
-    align-items: center;
-    gap: 16px;
 
     &--collapsable {
       cursor: pointer;
@@ -93,6 +91,7 @@ export default defineComponent({
   }
 
   &__content {
+    overflow: hidden;
   }
 }
 

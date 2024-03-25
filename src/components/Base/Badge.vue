@@ -29,15 +29,16 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .badge {
-  font-size: 12px;
+  font-size: 0.75rem;
   border-radius: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: 500;
-  padding: 8px;
+  padding: 0.5rem;
   overflow: hidden;
   white-space: nowrap;
+  flex-shrink: 0;
 
   &--info {
     color: #344054;

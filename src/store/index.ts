@@ -1,10 +1,12 @@
 import { createStore } from "vuex";
-import { Comment } from "@/types";
+import { Comment, Mode, User } from "@/types";
 import {
   deleteCommentById,
   findComment,
+  generateComment,
   updateCommentById,
 } from "@/utils/commentsUtil";
+import { persistPlugin } from "@/store/plugins";
 
 export default createStore({
   state: {
@@ -12,15 +14,21 @@ export default createStore({
     loading: false,
     error: null as string | null,
     user: {
-      avatar: null as string | null,
-      username: null as string | null,
+      avatar: "",
+      username: "",
+      title: "",
+      handle: "",
+      isOnline: false,
     },
     upvotes: [] as number[],
     downvotes: [] as number[],
+    mode: Mode.New as Mode,
+    activeComment: null as Comment | null | undefined,
+    commentForm: "",
   },
   getters: {},
   mutations: {
-    SET_USER(state, user: { avatar: string | null; username: string }) {
+    SET_USER(state, user: User) {
       state.user = user;
     },
     SET_COMMENTS(state, comments: Comment[]) {
@@ -38,11 +46,29 @@ export default createStore({
     SET_DOWNVOTES(state, downvotes: number[]) {
       state.downvotes = downvotes;
     },
+    SET_MODE(state, mode: Mode) {
+      state.mode = mode;
+    },
+    SET_ACTIVE_COMMENT(state, comment: Comment) {
+      state.activeComment = comment;
+    },
+    SET_FORM(state, value: string) {
+      state.commentForm = value;
+    },
   },
   actions: {
-    async fetchData({ commit }) {
+    async fetchData({ commit, state }) {
       try {
         commit("SET_LOADING", true);
+
+        if (
+          state.comments.length > 0 ||
+          state.upvotes.length > 0 ||
+          state.downvotes.length > 0
+        ) {
+          return;
+        }
+
         const response = await fetch("/data.json");
         const data = await response.json();
         commit("SET_COMMENTS", data.comments);
@@ -90,6 +116,47 @@ export default createStore({
         commit("SET_COMMENTS", state.comments);
       }
     },
+    setModeAndComment(
+      { commit },
+      { comment, mode }: { comment: Comment | null; mode: Mode }
+    ) {
+      commit("SET_MODE", mode);
+      commit("SET_ACTIVE_COMMENT", comment);
+      if (mode === Mode.Edit && comment) {
+        commit("SET_FORM", comment.content);
+      } else {
+        commit("SET_FORM", "");
+      }
+    },
+    updateForm({ commit }, value: string) {
+      commit("SET_FORM", value);
+    },
+    submitForm({ commit, state, dispatch }) {
+      const { mode, activeComment, commentForm, comments, user } = state;
+
+      if (!commentForm.length) {
+        return false;
+      }
+
+      const newComment = generateComment(commentForm, user);
+
+      if (mode === Mode.Edit && activeComment) {
+        updateCommentById(comments, activeComment.id, { content: commentForm });
+      } else if (mode === Mode.Reply && activeComment) {
+        const replyToComment = findComment(comments, activeComment.id);
+        if (replyToComment) {
+          replyToComment.replies.push(newComment);
+        }
+      } else {
+        comments.push(newComment);
+      }
+
+      commit("SET_COMMENTS", comments);
+      commit("SET_FORM", "");
+      dispatch("setModeAndComment", { mode: Mode.New, comment: null });
+      return true;
+    },
   },
   modules: {},
+  plugins: [persistPlugin],
 });

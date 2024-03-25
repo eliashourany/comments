@@ -16,6 +16,10 @@ export default defineComponent({
 
 html {
   scroll-behavior: smooth;
+  font-size: 16px;
+  @media (max-width: 700px) {
+    font-size: 13px;
+  }
 }
 
 body {
