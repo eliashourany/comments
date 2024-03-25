@@ -65,7 +65,10 @@
   ],
   "user": {
     "username": "Elias Hourany",
-    "avatar": "https://xsgames.co/randomusers/avatar.php?g=male"
+    "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
+    "handle": "@elias",
+    "title": "Frontend Software Engineer",
+    "isOnline": true
   },
   "upvotes": [1,2],
   "downvotes": [3]
