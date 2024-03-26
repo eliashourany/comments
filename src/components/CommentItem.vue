@@ -214,32 +214,30 @@ export default defineComponent({
   }
 }
 
-@media (min-width: 700px) {
-  .badge-enter-from {
-    opacity: 0;
-    max-width: 0;
-  }
+.badge-enter-from {
+  opacity: 0;
+  max-width: 0;
+}
 
-  .badge-enter-to {
-    max-width: 600px;
-  }
-  .badge-enter-active,
-  .badge-leave-active {
-    transition: all 0.4s ease;
-  }
+.badge-enter-to {
+  max-width: 600px;
+}
+.badge-enter-active,
+.badge-leave-active {
+  transition: all 0.4s ease;
+}
 
-  .badge-leave-from {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    max-width: 600px;
-  }
+.badge-leave-from {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  max-width: 600px;
+}
 
-  .badge-leave-to {
-    opacity: 0;
-    max-width: 0;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-right: -16px;
-  }
+.badge-leave-to {
+  opacity: 0;
+  max-width: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-right: -16px;
 }
 </style>
