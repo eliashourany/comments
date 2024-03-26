@@ -146,7 +146,10 @@ export default createStore({
       const newComment = generateComment(commentForm, user);
 
       if (mode === Mode.Edit && activeComment) {
-        updateCommentById(comments, activeComment.id, { content: commentForm });
+        updateCommentById(comments, activeComment.id, {
+          content: commentForm,
+          createdAt: new Date().toISOString(),
+        });
       } else if (mode === Mode.Reply && activeComment) {
         const replyToComment = findComment(comments, activeComment.id);
         if (replyToComment) {
