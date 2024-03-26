@@ -69,7 +69,7 @@ export default defineComponent({
   width: 2rem;
   height: 2rem;
   margin: 0;
-
+  flex-shrink: 0;
   &__image {
     width: 100%;
     height: 100%;
