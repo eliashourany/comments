@@ -75,13 +75,12 @@ export function generateComment(content: string, user: User) {
 }
 
 export function extractUniqueUsernames(comments: Comment[]) {
-  const allUsernames = new Set(); // Use a Set to ensure uniqueness
+  const allUsernames = new Set();
 
   function processComments(commentsArray: Comment[]) {
     commentsArray.forEach((comment) => {
       allUsernames.add(comment.user.username);
 
-      // Recurse into Replies
       if (comment.replies) {
         processComments(comment.replies);
       }
@@ -89,5 +88,5 @@ export function extractUniqueUsernames(comments: Comment[]) {
   }
 
   processComments(comments);
-  return Array.from(allUsernames); // Convert back to array
+  return Array.from(allUsernames);
 }
