@@ -13,6 +13,7 @@ export default defineComponent({
     level: { type: Number, default: 0 },
     upvotes: { type: Array as PropType<number[]>, default: () => [] },
     downvotes: { type: Array as PropType<number[]>, default: () => [] },
+    usernames: { type: Array as PropType<string[]>, default: () => [] },
   },
   data() {
     return {
@@ -59,6 +60,7 @@ export default defineComponent({
         @onReply="onReply"
         :upvoting="upvotes.includes(comment.id)"
         :downvoting="downvotes.includes(comment.id)"
+        :usernames="usernames"
       ></comment-item>
       <comment-list
         v-if="comment.replies.length > 0 && !isCollapsed(comment.id)"
@@ -72,6 +74,7 @@ export default defineComponent({
         @onUpvote="(commentId) => $emit('onUpvote', commentId)"
         :upvotes="upvotes"
         :downvotes="downvotes"
+        :usernames="usernames"
       ></comment-list>
     </template>
   </transition-group>

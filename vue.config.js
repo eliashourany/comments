@@ -5,4 +5,13 @@ module.exports = defineConfig({
     process.env.NODE_ENV === "production"
       ? "/comments/" // For production
       : "/",
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: `
+          @import "@/scss/_variables.scss";
+        `,
+      },
+    },
+  },
 });

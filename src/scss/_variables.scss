@@ -1,0 +1,23 @@
+
+$lighten: 20%;
+$darken: 20%;
+$primary-color: #7f56d9;
+$error-color: #b42318;
+
+$colors: (
+        primary: (
+                base: $primary-color,
+                light: lighten($primary-color, $lighten),
+                dark: darken($primary-color, $darken),
+        ),
+        error: (
+                base: $error-color,
+                light: lighten($error-color, $lighten),
+                dark: darken($error-color, $darken),
+        ),
+);
+
+@function clr($base, $shade: base) {
+  $color: map-get(map-get($colors, $base), $shade);
+  @return $color;
+}

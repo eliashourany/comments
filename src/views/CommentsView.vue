@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import CommentList from "@/components/CommentList.vue";
 import CommentForm from "@/components/CommentForm.vue";
 import { Mode } from "@/types";
@@ -16,6 +16,7 @@ export default defineComponent({
       "upvotes",
       "downvotes",
     ]),
+    ...mapGetters(["uniqueUsernames"]),
   },
   methods: {
     ...mapMutations(["addComment"]),
@@ -45,6 +46,7 @@ export default defineComponent({
       :downvotes="downvotes"
       @onEdit="onEdit"
       @onReply="onReply"
+      :usernames="uniqueUsernames"
     ></comment-list>
     <comment-form :user="user"></comment-form>
   </div>

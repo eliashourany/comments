@@ -30,6 +30,18 @@ export default defineComponent({
     shouldCollapse(): boolean {
       return this.windowWidth <= 700;
     },
+    processedCommentContent() {
+      const usernameRegex = new RegExp(`@(${this.usernames.join("|")})`, "gi");
+
+      let processedText: string = this.comment.content.replace(
+        usernameRegex,
+        (match, username) => {
+          return `<b>${match}</b>`;
+        }
+      );
+
+      return processedText;
+    },
   },
   components: { Badge, Container, Vote, Button, Avatar },
   props: {
@@ -38,6 +50,7 @@ export default defineComponent({
     level: { type: Number, default: 1 },
     upvoting: { type: Boolean, default: false },
     downvoting: { type: Boolean, default: false },
+    usernames: { type: Array as PropType<string[]>, default: () => [] },
   },
   methods: {
     timeAgo,
@@ -133,7 +146,7 @@ export default defineComponent({
         :score="comment.score"
         :horizontal="shouldCollapse"
       ></Vote>
-      {{ comment.content }}
+      <p v-html="processedCommentContent"></p>
     </template>
   </Container>
 </template>
@@ -149,7 +162,7 @@ export default defineComponent({
     @media (max-width: 700px) {
       flex-wrap: wrap;
       gap: 8px;
-      row-gap: 0;
+      row-gap: 5px;
     }
   }
   @media (max-width: 700px) {

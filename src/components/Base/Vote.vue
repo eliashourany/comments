@@ -76,7 +76,7 @@ export default defineComponent({
     }
 
     &--active {
-      border: 1px solid #d6bbfb;
+      border: 1px solid clr(primary, light);
     }
   }
 

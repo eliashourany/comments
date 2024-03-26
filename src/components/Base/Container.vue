@@ -72,7 +72,7 @@ export default defineComponent({
   border: 1px solid transparent;
 
   &--collapsed {
-    border-color: #d6bbfb;
+    border-color: clr(primary, light);
   }
 
   &__header,

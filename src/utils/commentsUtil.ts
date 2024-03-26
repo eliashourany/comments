@@ -73,3 +73,21 @@ export function generateComment(content: string, user: User) {
     replies: [],
   };
 }
+
+export function extractUniqueUsernames(comments: Comment[]) {
+  const allUsernames = new Set(); // Use a Set to ensure uniqueness
+
+  function processComments(commentsArray: Comment[]) {
+    commentsArray.forEach((comment) => {
+      allUsernames.add(comment.user.username);
+
+      // Recurse into Replies
+      if (comment.replies) {
+        processComments(comment.replies);
+      }
+    });
+  }
+
+  processComments(comments);
+  return Array.from(allUsernames); // Convert back to array
+}

@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import { Comment, Mode, User } from "@/types";
 import {
   deleteCommentById,
+  extractUniqueUsernames,
   findComment,
   generateComment,
   updateCommentById,
@@ -26,7 +27,11 @@ export default createStore({
     activeComment: null as Comment | null | undefined,
     commentForm: "",
   },
-  getters: {},
+  getters: {
+    uniqueUsernames(state) {
+      return extractUniqueUsernames(state.comments);
+    },
+  },
   mutations: {
     SET_USER(state, user: User) {
       state.user = user;
@@ -75,8 +80,8 @@ export default createStore({
         commit("SET_USER", data.user);
         commit("SET_UPVOTES", data.upvotes);
         commit("SET_DOWNVOTES", data.downvotes);
-      } catch (error: any) {
-        commit("SET_ERROR", error.message);
+      } catch (error: unknown) {
+        commit("SET_ERROR", error);
       } finally {
         commit("SET_LOADING", false);
       }

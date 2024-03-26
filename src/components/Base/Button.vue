@@ -88,27 +88,27 @@ export default defineComponent({
   }
 
   &--primary:not(&--outlined) {
-    background-color: #7f56d9;
+    background-color: clr(primary);
   }
 
   &--primary:not(&--outlined):hover {
-    background-color: lighten(#7f56d9, 10%);
+    background-color: clr(primary, light);
   }
 
   &--primary#{&}--outlined {
-    color: #6941c6;
+    color: clr(primary);
   }
 
   &--secondary:not(&--outlined) {
-    background-color: #b42318;
+    background-color: clr(error);
   }
 
   &--secondary:not(&--outlined):hover {
-    background-color: lighten(#b42318, 30%);
+    background-color: clr(error, light);
   }
 
   &--secondary#{&}--outlined {
-    color: #b42318;
+    color: clr(error);
   }
 }
 </style>
