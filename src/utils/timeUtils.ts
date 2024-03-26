@@ -12,7 +12,7 @@ export function timeAgo(timestamp: string) {
     "minutes",
   ]);
 
-  const roundedMinutes = Math.floor(diff.minutes); // Round down
+  const roundedMinutes = Math.floor(diff.minutes);
 
   if (diff.years >= 1) {
     return created.toLocaleString(DateTime.DATE_MED);
