@@ -158,7 +158,8 @@ export default defineComponent({
   &__header {
     align-items: center;
     gap: 16px;
-    align-items: center;
+    overflow: hidden;
+
     @media (max-width: 700px) {
       flex-wrap: wrap;
       gap: 8px;
