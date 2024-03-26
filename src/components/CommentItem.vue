@@ -146,7 +146,7 @@ export default defineComponent({
         :score="comment.score"
         :horizontal="shouldCollapse"
       ></Vote>
-      <p v-html="processedCommentContent"></p>
+      <p class="comment__text" v-html="processedCommentContent"></p>
     </template>
   </Container>
 </template>
@@ -207,6 +207,10 @@ export default defineComponent({
     @media (max-width: 700px) {
       padding: 10px !important;
     }
+  }
+
+  &__text {
+    margin: 0;
   }
 }
 
